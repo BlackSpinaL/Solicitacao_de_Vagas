@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formulário de Cadastro</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f4f4f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+      color: #1a1a1a;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      color: #1a1a1a;
+    }
+
+    .card {
+      background: #fff;
+      border: 0.5px solid #ddd;
+      border-radius: 12px;
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 520px;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .section-sub {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 1rem;
+    }
+
+    label {
+      font-size: 13px;
+      color: #555;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 9px 12px;
+      border: 0.5px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: inherit;
+      color: #1a1a1a;
+      background: #fff;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    input:focus { border-color: #185FA5; }
+
+    .btn {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 0.5px solid #ccc;
+      background: #fff;
+      color: #1a1a1a;
+      margin-top: 10px;
+      transition: background 0.15s;
+      font-family: inherit;
+    }
+
+    .btn:hover { background: #f0f0ec; }
+
+    .btn-primary { background: #185FA5; color: #E6F1FB; border-color: #185FA5; }
+    .btn-primary:hover { background: #0C447C; }
+
+    .btn-danger { background: #A32D2D; color: #FCEBEB; border-color: #A32D2D; }
+    .btn-danger:hover { background: #791F1F; }
+
+    .msg { font-size: 13px; margin-top: 6px; min-height: 18px; }
+    .msg-err { color: #A32D2D; }
+    .msg-ok { color: #3B6D11; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .badge-green { background: #EAF3DE; color: #3B6D11; }
+    .badge-red { background: #FCEBEB; color: #A32D2D; }
+    .badge-amber { background: #FAEEDA; color: #854F0B; }
+
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+
+    .code-box {
+      font-family: monospace;
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: 10px;
+      text-align: center;
+      padding: 14px;
+      background: #f4f4f0;
+      border-radius: 8px;
+      border: 0.5px solid #ddd;
+      color: #1a1a1a;
+      margin: 12px 0;
+    }
+
+    hr { border: none; border-top: 0.5px solid #e0e0e0; margin: 1rem 0; }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 1.5rem;
+      border-bottom: 0.5px solid #ddd;
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .tab {
+      padding: 8px 16px;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+      border-bottom: 2px solid transparent;
+      background: none;
+      color: #666;
+      font-family: inherit;
+      transition: color 0.15s;
+    }
+
+    .tab.active { color: #185FA5; border-bottom-color: #185FA5; font-weight: 500; }
+
+    .hist-item {
+      font-size: 13px;
+      padding: 6px 0;
+      border-bottom: 0.5px solid #eee;
+      color: #555;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .hist-item:last-child { border-bottom: none; }
+
+    #status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 620px;
+      border: none;
+      border-radius: 8px;
+    }
+
+    #codigo-input {
+      font-family: monospace;
+      font-size: 24px;
+      letter-spacing: 8px;
+      text-align: center;
+    }
+
+    .btn-sm {
+      width: auto;
+      margin-top: 0;
+      padding: 6px 14px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Formulário de Cadastro</h1>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('secretaria')">
+      <i class="ti ti-shield-lock"></i> Secretaria
+    </button>
+    <button class="tab" onclick="showTab('participante')">
+      <i class="ti ti-forms"></i> Participante
+    </button>
+  </div>
+
+  <!-- ABA SECRETARIA -->
+  <div id="tab-secretaria" style="width:100%; max-width:520px;">
+    <div class="card">
+      <div class="row" style="margin-bottom:1rem;">
+        <div>
+          <p class="section-title">Painel da secretaria</p>
+          <p class="section-sub">Gere um código para liberar o formulário</p>
+        </div>
+        <div>
+          <span id="status-dot" style="background:#E24B4A;"></span>
+          <span id="status-label" class="badge badge-red">Bloqueado</span>
+        </div>
+      </div>
+
+      <label>Senha da secretaria</label>
+      <input type="password" id="admin-pass" placeholder="Digite sua senha..." />
+      <p class="msg msg-err" id="admin-msg"></p>
+      <button class="btn btn-primary" onclick="gerarCodigo()">
+        <i class="ti ti-key"></i> Gerar código de acesso
+      </button>
+
+      <div id="codigo-area" style="display:none;">
+        <hr>
+        <label>Código gerado — passe para o participante:</label>
+        <div class="code-box" id="codigo-display">----</div>
+        <p style="font-size:12px; color:#888; text-align:center;">Válido para um único uso</p>
+        <button class="btn btn-danger" onclick="bloquearManual()">
+          <i class="ti ti-lock"></i> Cancelar código
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="section-title" style="margin-bottom:10px;">Histórico de acessos</p>
+      <div id="historico">
+        <p style="font-size:13px; color:#888;">Nenhum acesso registrado ainda.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABA PARTICIPANTE -->
+  <div id="tab-participante" style="display:none; width:100%; max-width:520px;">
+    <div id="tela-codigo" class="card">
+      <p class="section-title">Acesso ao formulário</p>
+      <p class="section-sub">Digite o código fornecido pela secretaria</p>
+      <label>Código de acesso</label>
+      <input type="text" id="codigo-input" placeholder="0000" maxlength="4" />
+      <p class="msg msg-err" id="part-msg"></p>
+      <button class="btn btn-primary" onclick="validarCodigo()">
+        <i class="ti ti-arrow-right"></i> Acessar formulário
+      </button>
+    </div>
+
+    <div id="tela-formulario" style="display:none;">
+      <div class="card" style="padding:1rem;">
+        <div class="row">
+          <span class="badge badge-green">
+            <i class="ti ti-circle-check"></i> Acesso liberado
+          </span>
+          <button class="btn btn-danger btn-sm" onclick="bloquearAposEnvio()">
+            <i class="ti ti-lock"></i> Encerrar acesso
+          </button>
+        </div>
+        <p style="font-size:12px; color:#888; margin-top:8px;">
+          Após preencher, clique em "Encerrar acesso" para bloquear novamente.
+        </p>
+      </div>
+      <iframe
+        id="form-iframe"
+        src="https://docs.google.com/forms/d/e/1FAIpQLSdn7JejCMX8001L0Smt439rnEer5pm2fuaJTIBQFpwgydMFGQ/viewform?embedded=true"
+        title="Formulário de Cadastro">
+      </iframe>
+    </div>
+  </div>
+
+  <script>
+    const ADMIN_SENHA = "secretaria";
+    let codigoAtivo = null;
+    let historico = [];
+
+    function showTab(tab) {
+      document.getElementById('tab-secretaria').style.display = tab === 'secretaria' ? 'block' : 'none';
+      document.getElementById('tab-participante').style.display = tab === 'participante' ? 'block' : 'none';
+      document.querySelectorAll('.tab').forEach(function(t, i) {
+        t.classList.toggle('active', (i === 0 && tab === 'secretaria') || (i === 1 && tab === 'participante'));
+      });
+    }
+
+    function gerarCodigo() {
+      var pass = document.getElementById('admin-pass').value;
+      var msg = document.getElementById('admin-msg');
+      if (pass !== ADMIN_SENHA) {
+        msg.textContent = "Senha incorreta.";
+        return;
+      }
+      msg.textContent = "";
+      codigoAtivo = String(Math.floor(1000 + Math.random() * 9000));
+      document.getElementById('codigo-display').textContent = codigoAtivo;
+      document.getElementById('codigo-area').style.display = 'block';
+      atualizarStatus(true);
+    }
+
+    function validarCodigo() {
+      var input = document.getElementById('codigo-input').value.trim();
+      var msg = document.getElementById('part-msg');
+      if (!codigoAtivo) {
+        msg.textContent = "Nenhum código ativo. Solicite à secretaria.";
+        return;
+      }
+      if (input !== codigoAtivo) {
+        msg.textContent = "Código inválido. Verifique com a secretaria.";
+        return;
+      }
+      msg.textContent = "";
+      document.getElementById('tela-codigo').style.display = 'none';
+      document.getElementById('tela-formulario').style.display = 'block';
+      registrarAcesso("Acesso liberado — código " + codigoAtivo);
+      codigoAtivo = null;
+      atualizarStatus(false);
+      document.getElementById('codigo-area').style.display = 'none';
+      document.getElementById('codigo-display').textContent = '----';
+      document.getElementById('admin-pass').value = '';
+    }
+
+    function bloquearManual() {
+      codigoAtivo = null;
+      document.getElementById('codigo-area').style.display = 'none';
+      document.getElementById('codigo-display').textContent = '----';
+      atualizarStatus(false);
+      registrarAcesso("Código cancelado manualmente");
+    }
+
+    function bloquearAposEnvio() {
+      document.getElementById('tela-formulario').style.display = 'none';
+      document.getElementById('tela-codigo').style.display = 'block';
+      document.getElementById('codigo-input').value = '';
+      registrarAcesso("Acesso encerrado após envio");
+    }
+
+    function atualizarStatus(liberado) {
+      var dot = document.getElementById('status-dot');
+      var label = document.getElementById('status-label');
+      if (liberado) {
+        dot.style.background = '#639922';
+        label.className = 'badge badge-green';
+        label.textContent = 'Código ativo';
+      } else {
+        dot.style.background = '#E24B4A';
+        label.className = 'badge badge-red';
+        label.textContent = 'Bloqueado';
+      }
+    }
+
+    function registrarAcesso(texto) {
+      var agora = new Date();
+      var hora = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      historico.unshift({ hora: hora, texto: texto });
+      var hist = document.getElementById('historico');
+      hist.innerHTML = historico.slice(0, 10).map(function(h) {
+        return '<div class="hist-item"><span>' + h.texto + '</span><span>' + h.hora + '</span></div>';
+      }).join('');
+    }
+  </script>
+</body>
+</html>
