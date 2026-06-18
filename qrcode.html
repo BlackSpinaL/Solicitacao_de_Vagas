@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>QR Code — Formulário de Cadastro</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 100vh;
+      background: #fff; color: #1a1a1a; padding: 2rem;
+    }
+    h1 { font-size: 20px; font-weight: 500; margin-bottom: 0.5rem; text-align: center; }
+    p { font-size: 14px; color: #555; margin-bottom: 1.5rem; text-align: center; }
+    #qrcode { margin-bottom: 1rem; }
+    .url { font-size: 12px; color: #888; font-family: monospace; }
+    .instrucao {
+      margin-top: 1.5rem; font-size: 13px; color: #444;
+      border: 0.5px solid #ddd; border-radius: 8px; padding: 12px 16px;
+      max-width: 320px; text-align: center; line-height: 1.6;
+    }
+    @media print {
+      body { justify-content: flex-start; padding-top: 3rem; }
+      .no-print { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Formulário de Cadastro</h1>
+  <p>Escaneie o QR Code para acessar o formulário</p>
+  <div id="qrcode"></div>
+  <p class="url">blackspinal.github.io/formulario-cadastro/participante.html</p>
+  <div class="instrucao">
+    📋 Após escanear, solicite o código de acesso à secretaria e preencha o formulário.
+  </div>
+  <br>
+  <button class="no-print" onclick="window.print()" style="padding:10px 24px; border-radius:8px; border:0.5px solid #ccc; background:#185FA5; color:#fff; font-size:14px; cursor:pointer; font-family:inherit;">🖨️ Imprimir</button>
+
+  <script>
+    new QRCode(document.getElementById("qrcode"), {
+      text: "https://blackspinal.github.io/formulario-cadastro/participante.html",
+      width: 220,
+      height: 220,
+      colorDark: "#1a1a1a",
+      colorLight: "#ffffff"
+    });
+  </script>
+</body>
+</html>
