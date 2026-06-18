@@ -8,58 +8,35 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #f4f4f0;
-      min-height: 100vh;
-      padding: 1.5rem 1rem;
-      color: #1a1a1a;
+      background: #f4f4f0; min-height: 100vh;
+      padding: 1.5rem 1rem; color: #1a1a1a;
     }
     h1 { font-size: 18px; font-weight: 500; margin-bottom: 1.5rem; text-align: center; }
     .card {
-      background: #fff;
-      border: 0.5px solid #ddd;
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-bottom: 1rem;
+      background: #fff; border: 0.5px solid #ddd; border-radius: 12px;
+      padding: 1.5rem; margin-bottom: 1rem;
     }
     .section-title { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
     .section-sub { font-size: 13px; color: #666; margin-bottom: 1rem; }
     label { font-size: 13px; color: #555; display: block; margin-bottom: 5px; }
     input[type="text"] {
-      width: 100%;
-      padding: 12px;
-      border: 0.5px solid #ccc;
-      border-radius: 8px;
-      font-size: 28px;
-      font-family: monospace;
-      letter-spacing: 10px;
-      text-align: center;
-      color: #1a1a1a;
-      background: #fff;
-      outline: none;
+      width: 100%; padding: 12px; border: 0.5px solid #ccc;
+      border-radius: 8px; font-size: 32px; font-family: monospace;
+      letter-spacing: 12px; text-align: center; color: #1a1a1a;
+      background: #fff; outline: none;
     }
     input:focus { border-color: #185FA5; }
     .btn {
-      width: 100%;
-      padding: 14px;
-      border-radius: 8px;
-      font-size: 15px;
-      font-weight: 500;
-      cursor: pointer;
-      border: none;
-      margin-top: 12px;
+      width: 100%; padding: 14px; border-radius: 8px; font-size: 15px;
+      font-weight: 500; cursor: pointer; border: none; margin-top: 12px;
       font-family: inherit;
     }
     .btn-primary { background: #185FA5; color: #fff; }
     .btn-danger { background: #A32D2D; color: #fff; }
     .msg { font-size: 13px; margin-top: 8px; min-height: 18px; color: #A32D2D; }
     .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 4px 12px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 500;
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 12px; border-radius: 8px; font-size: 13px; font-weight: 500;
     }
     .badge-green { background: #EAF3DE; color: #3B6D11; }
     .row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
@@ -82,39 +59,51 @@
     <div class="card" style="padding:1rem;">
       <div class="row">
         <span class="badge badge-green">✓ Acesso liberado</span>
-        <button class="btn btn-danger" style="width:auto; padding:8px 14px; font-size:13px; margin-top:0;" onclick="encerrar()">Encerrar</button>
+        <button class="btn btn-danger" style="width:auto; padding:8px 14px; font-size:13px; margin-top:0;" onclick="encerrar()">Encerrar acesso</button>
       </div>
-      <p style="font-size:12px; color:#888;">Após preencher, clique em "Encerrar".</p>
+      <p style="font-size:12px; color:#888; margin-top:6px;">Após preencher, clique em "Encerrar acesso".</p>
     </div>
     <iframe id="form-iframe" src="" title="Formulário de Cadastro"></iframe>
   </div>
 
   <script>
+    const API_KEY = "$2a$10$PrKobAXtSCPNSFk6yK8Yh.pVe1ChVcF3tWyB8a9H1DanEK9BTzEHG";
+    const BIN_ID = "6a34501dda38895dfed9913e";
     const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdn7JejCMX8001L0Smt439rnEer5pm2fuaJTIBQFpwgydMFGQ/viewform?embedded=true";
 
     function validarCodigo() {
       var input = document.getElementById('codigo-input').value.trim();
       var msg = document.getElementById('part-msg');
+      msg.textContent = "Verificando...";
 
-      fetch('https://blackspinal.github.io/formulario-cadastro/codigo.json?t=' + Date.now())
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-          if (!data.codigo || data.codigo === "") {
-            msg.textContent = "Nenhum código ativo. Solicite à secretaria.";
-            return;
-          }
-          if (input !== data.codigo) {
-            msg.textContent = "Código inválido. Verifique com a secretaria.";
-            return;
-          }
-          msg.textContent = "";
-          document.getElementById('tela-codigo').style.display = 'none';
-          document.getElementById('tela-formulario').style.display = 'block';
-          document.getElementById('form-iframe').src = FORM_URL;
-        })
-        .catch(function() {
-          msg.textContent = "Erro ao verificar código. Tente novamente.";
+      fetch("https://api.jsonbin.io/v3/b/" + BIN_ID + "/latest", {
+        headers: { "X-Master-Key": API_KEY }
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var codigoAtivo = data.record.codigo;
+        if (!codigoAtivo || codigoAtivo === "") {
+          msg.textContent = "Nenhum código ativo. Solicite à secretaria.";
+          return;
+        }
+        if (input !== codigoAtivo) {
+          msg.textContent = "Código inválido. Verifique com a secretaria.";
+          return;
+        }
+        msg.textContent = "";
+        // Invalida o código após uso
+        fetch("https://api.jsonbin.io/v3/b/" + BIN_ID, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
+          body: JSON.stringify({ codigo: "" })
         });
+        document.getElementById('tela-codigo').style.display = 'none';
+        document.getElementById('tela-formulario').style.display = 'block';
+        document.getElementById('form-iframe').src = FORM_URL;
+      })
+      .catch(function() {
+        msg.textContent = "Erro de conexão. Verifique sua internet.";
+      });
     }
 
     function encerrar() {
